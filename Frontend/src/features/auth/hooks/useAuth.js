@@ -17,7 +17,8 @@ export const useAuth = () => {
             setUser(data.user)
             return data
         } catch (err) {
-
+            const message = err?.response?.data?.message || "Login failed. Please try again."
+            throw new Error(message)
         } finally {
             setLoading(false)
         }
@@ -30,7 +31,8 @@ export const useAuth = () => {
             setUser(data.user)
             return data
         } catch (err) {
-
+            const message = err?.response?.data?.message || "Registration failed. Please try again."
+            throw new Error(message)
         } finally {
             setLoading(false)
         }
