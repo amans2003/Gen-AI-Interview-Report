@@ -2,7 +2,7 @@ const { GoogleGenAI } = require("@google/genai")
 const { z } = require("zod")
 const { zodToJsonSchema } = require("zod-to-json-schema")
 let puppeteer;
-if (process.env.VERCEL) {
+if (process.env.NODE_ENV === "production") {
     puppeteer = require("puppeteer-core");
 } else {
     puppeteer = require("puppeteer");
@@ -63,7 +63,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
 
 async function generatePdfFromHtml(htmlContent) {
     let browser;
-    if (process.env.VERCEL) {
+    if (process.env.NODE_ENV === "production") {
         const chromium = require("@sparticuz/chromium");
         browser = await puppeteer.launch({
             args: chromium.args,
@@ -72,7 +72,7 @@ async function generatePdfFromHtml(htmlContent) {
             headless: chromium.headless,
         });
     } else {
-        browser = await puppeteer.launch();
+        browser = await puppeteer.launch({ headless: true });
     }
     const page = await browser.newPage();
     await page.setContent(htmlContent, { waitUntil: "networkidle0" })
